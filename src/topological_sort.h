@@ -57,7 +57,15 @@ private:
     }
 
     void sort(Vertex& v, std::forward_list<VertexElement>& sortedElements) {
-        // TODO
+        visit(v);
+        EdgeList edges = v.outEdges();
+        for (EdgeItor pe = edges.begin(); pe != edges.end(); ++pe) {
+            Vertex& w = (*pe).opposite(v);
+            if (!isVisited(w)) {
+                sort(w, sortedElements);
+            }
+        }
+        sortedElements.push_front((*v).element);
     }
 
     void visit(Vertex& v) {
